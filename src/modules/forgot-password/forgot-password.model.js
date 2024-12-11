@@ -1,37 +1,24 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../config/sequelize");
 
-const Users = sequelize.define(
-  "users",
+const ForgotPassCode = sequelize.define(
+  "forgot_pass_code",
   {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    username: {
-      type: DataTypes.STRING,
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
     },
-    fullname: {
+    code: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    pin: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    bio: {
-      type: DataTypes.STRING,
-    },
-    photo: {
-      type: DataTypes.STRING,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
+    expired_at: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
     createdAt: {
@@ -48,4 +35,4 @@ const Users = sequelize.define(
   }
 );
 
-module.exports = Users;
+module.exports = ForgotPassCode;

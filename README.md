@@ -1,1 +1,1 @@
-![Database Schema](./docs/images/goods-management.png)
+![Database Schema](./docs/images/chat-app.png)
