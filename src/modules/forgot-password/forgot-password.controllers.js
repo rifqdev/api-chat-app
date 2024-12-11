@@ -36,6 +36,8 @@ const updatePassword = async (req, res) => {
     const forgotPassCode = await ForgotPassCode.findOne({ where: { code } });
     if (!forgotPassCode) throw new Error("Code not found");
 
+    if (forgotPassCode.dataValues.expired_at < new Date()) throw new Error("Code has expired");
+
     const hashedPassword = await bcrypt.hash(new_password, 10);
 
     const result = await Users.update({ password: hashedPassword }, { where: { id: forgotPassCode.dataValues.user_id } });
