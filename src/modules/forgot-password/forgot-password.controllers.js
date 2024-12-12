@@ -1,4 +1,4 @@
-const Users = require("../auth/auth.model");
+const Users = require("../users/users.model");
 const ForgotPassCode = require("./forgot-password.model");
 const wrapper = require("../../utils/wrapper");
 const crypto = require("crypto");

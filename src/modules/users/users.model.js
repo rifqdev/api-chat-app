@@ -9,19 +9,28 @@ const Users = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    email: {
+    username: {
+      type: DataTypes.STRING,
+    },
+    fullname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    username: {
+    pin: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    bio: {
+      type: DataTypes.STRING,
+    },
+    photo: {
+      type: DataTypes.STRING,
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    role: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -31,7 +40,6 @@ const Users = sequelize.define(
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
   },
   {

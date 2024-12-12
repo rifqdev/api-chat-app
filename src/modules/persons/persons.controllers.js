@@ -1,5 +1,5 @@
 const Person = require("./persons.model");
-const Users = require("../auth/auth.model");
+const Users = require("../users/users.model");
 const wrapper = require("../../utils/wrapper");
 const { Op } = require("sequelize");
 

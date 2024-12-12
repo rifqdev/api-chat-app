@@ -1,4 +1,4 @@
-const Users = require("./auth.model");
+const Users = require("../users/users.model");
 const bcrypt = require("bcryptjs");
 const wrapper = require("../../utils/wrapper");
 const { generateToken, generateRefreshToken } = require("../../middlewares/jwt");
