@@ -17,8 +17,14 @@ const login = async (req, res) => {
     if (!isPasswordValid) throw new Error("Invalid password");
 
     const token = generateToken({ id: user.dataValues.id });
+    const refreshToken = generateRefreshToken({ id: user.dataValues.id });
 
-    return wrapper.successResponse(res, { token }, "Login success", 200);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    return wrapper.successResponse(res, { accessToken: token }, "Login success", 200);
   } catch (error) {
     return wrapper.errorResponse(res, error.message, 400);
   }

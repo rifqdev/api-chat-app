@@ -50,4 +50,16 @@ const getPersons = async (req, res) => {
   }
 };
 
-module.exports = { addPerson, getPersons };
+const getPersonByPin = async (req, res) => {
+  try {
+    const { pin } = req.params;
+    const getUser = await Users.findOne({ where: { pin } });
+    if (!getUser) throw new Error("User not found");
+
+    return wrapper.successResponse(res, getUser, "User fetched successfully", 200);
+  } catch (error) {
+    return wrapper.errorResponse(res, error.message, 400);
+  }
+};
+
+module.exports = { addPerson, getPersons, getPersonByPin };
