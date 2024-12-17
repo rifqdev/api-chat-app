@@ -7,8 +7,29 @@ const http = require("http");
 const { Server } = require("socket.io");
 const sequelize = require("./src/config/sequelize");
 const routes = require("./src/routes/index.routes");
+const path = require("path");
+const fs = require("fs");
 
 const PORT = process.env.PORT || 3000;
+
+// Membuat direktori uploads jika belum ada
+const uploadsDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+const minioClient = require("./src/config/minio");
+
+// Fungsi untuk memeriksa koneksi ke Minio
+const cekKoneksiMinio = async () => {
+  try {
+    console.log("cek koneksi minio");
+    const result = await minioClient.listBuckets();
+    console.log({ result });
+    console.log("Koneksi ke Minio berhasil.");
+  } catch (error) {
+    console.error("Gagal terhubung ke Minio:", error);
+  }
+};
 
 // Buat HTTP Server
 const server = http.createServer(app);
@@ -37,6 +58,7 @@ app.use("/", (req, res) => {
     status: "success",
     message: "Server running properly",
   });
+  cekKoneksiMinio();
 });
 
 // Konfigurasi Socket.IO
