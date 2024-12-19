@@ -1,5 +1,4 @@
-const Person = require("./persons.model");
-const Users = require("../users/users.model");
+const { Users, Person } = require("../../config/assosiations");
 const wrapper = require("../../utils/wrapper");
 const { Op } = require("sequelize");
 
@@ -42,9 +41,23 @@ const getPersons = async (req, res) => {
       offset,
       limit,
       order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: Users,
+          attributes: ["fullname", "username", "photo"],
+        },
+      ],
     });
 
-    return wrapper.paginationResponse(res, persons, persons.length, page, limit, "Friends fetched successfully", 200);
+    const newPersons = persons.map((person) => {
+      return {
+        ...person.dataValues,
+        friend_photo: person.dataValues.user.photo ? `http://${process.env.MINIO_ENDPOINT}/${person.dataValues.user.photo}` : null,
+        friend_username: person.dataValues.user.username,
+      };
+    });
+
+    return wrapper.paginationResponse(res, newPersons, newPersons.length, page, limit, "Friends fetched successfully", 200);
   } catch (error) {
     return wrapper.errorResponse(res, error.message, 400);
   }
@@ -56,6 +69,7 @@ const getPersonByPin = async (req, res) => {
     const getUser = await Users.findOne({ where: { pin } });
     if (!getUser) throw new Error("User not found");
 
+    getUser.dataValues.photo = getUser.dataValues.photo ? `http://${process.env.MINIO_ENDPOINT}/${getUser.dataValues.photo}` : null;
     return wrapper.successResponse(res, getUser, "User fetched successfully", 200);
   } catch (error) {
     return wrapper.errorResponse(res, error.message, 400);

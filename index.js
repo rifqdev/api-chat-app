@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     console.log("Message received:", data);
 
-    io.emit(data.to, data);
+    io.emit(`message_${data.to}`, data);
   });
 
   socket.on("disconnect", () => {
