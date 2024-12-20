@@ -7,6 +7,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const sequelize = require("./src/config/sequelize");
 const routes = require("./src/routes/index.routes");
+const chatControllers = require("./src/modules/chats/chats.controllers");
 const path = require("path");
 const fs = require("fs");
 
@@ -66,8 +67,8 @@ io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
   socket.on("send_message", (data) => {
-    console.log("Message received:", data);
-
+    // console.log("Message received:", data);
+    chatControllers.insertChat(data);
     io.emit(`message_${data.to}`, data);
   });
 
