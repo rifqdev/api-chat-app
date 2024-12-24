@@ -30,6 +30,10 @@ const Chats = sequelize.define(
       type: DataTypes.DATE,
       defaultValue: null,
     },
+    sender: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
