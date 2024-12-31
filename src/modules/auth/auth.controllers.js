@@ -24,7 +24,11 @@ const login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    return wrapper.successResponse(res, { accessToken: token }, "Login success", 200);
+    const data = {
+      userId: user.dataValues.id,
+      accessToken: token,
+    };
+    return wrapper.successResponse(res, data, "Login success", 200);
   } catch (error) {
     return wrapper.errorResponse(res, error.message, 400);
   }
