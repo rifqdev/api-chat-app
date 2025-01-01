@@ -41,9 +41,9 @@ const getHistoryChats = async (req, res) => {
 const readChat = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { id } = req.params;
+    const ids = req.body.ids;
 
-    await Chats.update({ is_read: true, read_at: new Date() }, { where: { user_id: userId, id } });
+    await Chats.update({ is_read: true, read_at: new Date() }, { where: { friend_id: userId, id: { [Op.in]: ids } } });
 
     return wrapper.successResponse(res, null, "Chats read successfully", 200);
   } catch (error) {
@@ -75,7 +75,7 @@ const getFriendChats = async (req, res) => {
           ),
           "last_message",
         ],
-        [Sequelize.fn("COUNT", Sequelize.literal("CASE WHEN chats.is_read = false THEN 1 ELSE 0 END")), "unread_message_count"],
+        [Sequelize.fn("SUM", Sequelize.literal("CASE WHEN chats.is_read = false THEN 1 ELSE 0 END")), "unread_message_count"],
       ],
       include: [
         {
