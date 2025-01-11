@@ -41,7 +41,7 @@ jobs:
       - name: Deploy ke VPS
         run: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.PORT }} ${{ secrets.USER }}@${{ secrets.HOST }} << EOF
-          cd /path/to/project
+          cd project/chat-app/api
           docker-compose pull
           docker-compose up -d
           EOF
